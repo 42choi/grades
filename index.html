@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>성적 확인 · 충북반도체고 2학년 6반</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wafer:#E5E8EC;
+    --surface:#FFFFFF;
+    --ink:#131A24;
+    --muted:#6B7688;
+    --hair:#CFD5DC;
+    --probe:#2B4ACB;
+    --anneal:#D98A1F;
+    --pass:#1E7A5A;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Malgun Gothic",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:var(--sans);
+    background:var(--wafer);
+    background-image:
+      linear-gradient(var(--hair) 1px,transparent 1px),
+      linear-gradient(90deg,var(--hair) 1px,transparent 1px);
+    background-size:44px 44px;
+    background-position:-1px -1px;
+    color:var(--ink);
+    min-height:100vh;
+    padding:24px 16px 64px;
+    display:flex;justify-content:center;
+    line-height:1.5;
+  }
+  .shell{width:100%;max-width:680px}
+
+  /* ---------- 헤더 ---------- */
+  .masthead{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:12px;padding-bottom:10px;margin-bottom:20px;
+    border-bottom:2px solid var(--ink);
+  }
+  .masthead h1{
+    font-size:15px;font-weight:800;letter-spacing:-.02em;
+  }
+  .masthead .term{
+    font-family:var(--mono);font-size:11px;font-weight:500;
+    color:var(--muted);letter-spacing:.06em;white-space:nowrap;
+  }
+
+  /* ---------- 로그인 ---------- */
+  .gate{
+    background:var(--surface);
+    border:1px solid var(--hair);
+    border-top:3px solid var(--ink);
+    padding:32px 24px 28px;
+  }
+  .gate .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    color:var(--probe);font-weight:700;margin-bottom:10px;
+  }
+  .gate h2{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+  .gate p.lead{font-size:13.5px;color:var(--muted);margin-bottom:24px}
+
+  .field{position:relative}
+  #code{
+    width:100%;
+    font-family:var(--mono);font-size:26px;font-weight:700;
+    letter-spacing:.42em;text-indent:.42em;text-align:center;
+    text-transform:uppercase;
+    padding:18px 12px;
+    color:var(--ink);
+    background:#F7F8FA;
+    border:1.5px solid var(--hair);
+    border-radius:0;
+    outline:none;
+    transition:border-color .15s,background .15s;
+  }
+  #code::placeholder{color:#B9C0C9;font-weight:400;letter-spacing:.42em}
+  #code:focus{border-color:var(--probe);background:#fff;box-shadow:0 0 0 3px rgba(43,74,203,.12)}
+  #code.err{border-color:#C0392B;background:#FEF6F5}
+
+  .ticks{
+    display:flex;justify-content:space-between;
+    margin-top:6px;padding:0 2px;
+  }
+  .ticks span{
+    width:1px;height:5px;background:var(--hair);
+  }
+
+  button.go{
+    width:100%;margin-top:18px;padding:15px;
+    font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:-.01em;
+    color:#fff;background:var(--ink);
+    border:none;border-radius:0;cursor:pointer;
+    transition:background .15s;
+  }
+  button.go:hover{background:var(--probe)}
+  button.go:disabled{background:#8A93A0;cursor:progress}
+  button.go:focus-visible,#code:focus-visible{outline:2px solid var(--probe);outline-offset:2px}
+
+  .msg{
+    margin-top:14px;font-size:13px;min-height:19px;
+    font-weight:600;color:#C0392B;
+  }
+  .gate .note{
+    margin-top:24px;padding-top:16px;border-top:1px dashed var(--hair);
+    font-size:12px;color:var(--muted);line-height:1.7;
+  }
+
+  /* ---------- 성적표 ---------- */
+  .card{background:var(--surface);border:1px solid var(--hair);border-top:3px solid var(--ink)}
+  .hidden{display:none}
+
+  .who{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:16px;padding:24px 22px 20px;border-bottom:1px solid var(--hair);
+  }
+  .who .cls{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.08em}
+  .who .nm{font-size:30px;font-weight:800;letter-spacing:-.035em;line-height:1.15;margin-top:2px}
+  .who button{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    color:var(--muted);background:none;border:1px solid var(--hair);
+    padding:7px 10px;cursor:pointer;white-space:nowrap;
+  }
+  .who button:hover{color:var(--ink);border-color:var(--ink)}
+
+  /* 순위 — 시그니처: 계측 눈금 위의 지표 */
+  .ranks{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--hair)}
+  .rank{padding:20px 22px}
+  .rank + .rank{border-left:1px solid var(--hair)}
+  .rank .lab{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+    color:var(--muted);font-weight:500;margin-bottom:6px;
+  }
+  .rank .val{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;line-height:1}
+  .rank .val b{font-size:40px;color:var(--probe)}
+  .rank .val i{font-size:15px;font-style:normal;color:var(--muted)}
+  .scale{position:relative;height:22px;margin-top:12px}
+  .scale .rail{position:absolute;top:9px;left:0;right:0;height:2px;background:#E3E7EB}
+  .scale .fill{position:absolute;top:9px;left:0;height:2px;background:var(--probe);
+    width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+  .scale .pin{
+    position:absolute;top:2px;width:2px;height:16px;background:var(--ink);
+    left:0;transform:translateX(-1px);
+    transition:left .9s cubic-bezier(.2,.8,.2,1);
+  }
+  .scale .ends{
+    position:absolute;top:16px;left:0;right:0;display:flex;justify-content:space-between;
+    font-family:var(--mono);font-size:9.5px;color:#A6AEB9;
+  }
+
+  /* 요약 */
+  .sums{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--hair)}
+  .sum{padding:16px 22px;text-align:left}
+  .sum + .sum{border-left:1px solid var(--hair)}
+  .sum .lab{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-bottom:5px}
+  .sum .v{font-family:var(--mono);font-size:20px;font-weight:700;letter-spacing:-.02em}
+  .sum .v small{font-size:11px;color:var(--muted);font-weight:500;margin-left:2px}
+
+  /* 과목 */
+  .sec{
+    display:flex;align-items:center;gap:8px;
+    padding:18px 22px 10px;
+  }
+  .sec h3{font-size:13px;font-weight:800;letter-spacing:-.01em}
+  .sec .legend{
+    margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--muted);
+    display:flex;align-items:center;gap:5px;
+  }
+  .sec .legend em{
+    display:inline-block;width:2px;height:11px;background:var(--anneal);font-style:normal;
+  }
+
+  .rows{padding:0 22px 8px}
+  .row{padding:13px 0;border-bottom:1px solid #EEF1F3}
+  .row:last-child{border-bottom:none}
+  .row .top{display:flex;align-items:baseline;gap:8px;margin-bottom:9px}
+  .row .sub{font-size:14.5px;font-weight:700;letter-spacing:-.015em}
+  .row .cr{
+    font-family:var(--mono);font-size:10px;color:var(--muted);
+    border:1px solid var(--hair);padding:1px 4px;
+  }
+  .row .sc{margin-left:auto;font-family:var(--mono);font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .row .dv{margin-left:8px;font-family:var(--mono);font-size:11px;font-weight:500}
+  .dv.up{color:var(--pass)} .dv.dn{color:#B2453A} .dv.eq{color:var(--muted)}
+
+  /* 시그니처: 과목별 계측 눈금 */
+  .gauge{position:relative;height:14px}
+  .gauge .track{
+    position:absolute;top:5px;left:0;right:0;height:4px;background:#EDF0F3;
+  }
+  .gauge .bar{
+    position:absolute;top:5px;left:0;height:4px;background:var(--ink);
+    width:0;transition:width .8s cubic-bezier(.2,.8,.2,1);
+  }
+  .gauge .avg{
+    position:absolute;top:0;width:2px;height:14px;background:var(--anneal);
+    transform:translateX(-1px);
+  }
+  .gauge .grid{position:absolute;top:5px;left:0;right:0;height:4px;display:flex;justify-content:space-between}
+  .gauge .grid i{width:1px;height:4px;background:#fff;opacity:.9}
+
+  .foot{
+    padding:16px 22px 20px;border-top:1px solid var(--hair);
+    font-size:11.5px;color:var(--muted);line-height:1.7;
+  }
+  .foot code{font-family:var(--mono);background:#F1F3F5;padding:1px 4px}
+
+  @media (max-width:420px){
+    .who .nm{font-size:26px}
+    .rank .val b{font-size:34px}
+    .sums{grid-template-columns:1fr 1fr}
+    .sum:nth-child(3){grid-column:1/-1;border-left:none;border-top:1px solid var(--hair)}
+    #code{font-size:21px;letter-spacing:.3em;text-indent:.3em}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  .reveal{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="masthead">
+    <h1>충북반도체고 · 2학년 6반 성적 확인</h1>
+    <span class="term">2026-1</span>
+  </header>
+
+  <!-- 로그인 -->
+  <section class="gate card" id="gate">
+    <div class="eyebrow">CODE REQUIRED</div>
+    <h2>본인 확인 코드를 입력하세요</h2>
+    <p class="lead">선생님께 받은 8자리 코드를 넣으면 본인 성적만 열립니다.</p>
+
+    <div class="field">
+      <input id="code" type="text" inputmode="latin" autocomplete="off" autocapitalize="characters"
+             spellcheck="false" maxlength="8" placeholder="────────" aria-label="8자리 확인 코드">
+      <div class="ticks" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <button class="go" id="go">성적 확인</button>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+    <p class="note">
+      코드는 학생마다 다릅니다. 다른 사람의 코드로는 그 사람 성적이 열리므로 코드를 공유하지 마세요.<br>
+      코드를 잃어버렸으면 담임 선생님께 문의하세요.
+    </p>
+  </section>
+
+  <!-- 성적표 -->
+  <section class="card hidden" id="sheet">
+    <div class="who">
+      <div>
+        <div class="cls" id="cls"></div>
+        <div class="nm" id="nm"></div>
+      </div>
+      <button id="out">닫기</button>
+    </div>
+
+    <div class="ranks">
+      <div class="rank">
+        <div class="lab">전교 순위</div>
+        <div class="val"><b id="r1">–</b><i id="r1n"></i></div>
+        <div class="scale">
+          <div class="rail"></div><div class="fill" id="r1f"></div><div class="pin" id="r1p"></div>
+          <div class="ends"><span>1위</span><span id="r1e"></span></div>
+        </div>
+      </div>
+      <div class="rank">
+        <div class="lab">반 순위</div>
+        <div class="val"><b id="r2">–</b><i id="r2n"></i></div>
+        <div class="scale">
+          <div class="rail"></div><div class="fill" id="r2f"></div><div class="pin" id="r2p"></div>
+          <div class="ends"><span>1위</span><span id="r2e"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sums">
+      <div class="sum"><div class="lab">가중평균</div><div class="v" id="wavg"></div></div>
+      <div class="sum"><div class="lab">단순평균</div><div class="v" id="avg"></div></div>
+      <div class="sum"><div class="lab">총점</div><div class="v" id="total"></div></div>
+    </div>
+
+    <div class="sec">
+      <h3>과목별 점수</h3>
+      <span class="legend"><em></em> 우리 반 평균</span>
+    </div>
+    <div class="rows" id="rows"></div>
+
+    <div class="foot" id="foot"></div>
+  </section>
+
+</div>
+
+<script>
+const DATA = {"salt":"52b86149b66dd96d0c8cf0a263b04a02","iter":250000,"recs":{"bf86f217482b32130fce763de07a0a43":{"iv":"649ee3ccbdfad8c206abb354","ct":"388362bb65b8bc2a41a75149fbf816211e810eb8328ecf290fb117d822960c95d63076a2cd4f354a6f2c982f71e1f33ba063bc352bdd06ff865c79d95bbc10509ada942a011af837be5fbea6311e608fa570cfe539d25eb40c284f252f2ce64517ac582a0c2a810badd5252b76efca668d39c49894d9b8f46b13937c33a172beb907bfecb0d5ecced0a57922119e66d63c38f6d46ecdb3005b8b213387d1e4934de1c9b16c44493584f1f0d12053ecdfff80ea6bd37dc8e9d57580e9ba2d9b3f11af2929694e48a7c2037c1f67c860bfde80d3496f2345cd575ae7f8c8b4120edd335c0efe8423d7d3b0715d3c0e527a874e2ddfc03fe3a3b45e6c16d664be7c9cab46a7bfe6c2de6e426770ff3c92b2aaa6524f9aeb12b388ca3f3c26e9aa6a59d72c487e84e60d238efefc80b510d5ace3b30480f68557bcc9f528da17a3b53a1c13839b79b7fd153238ed5fd1c7a89f2ee2932e5c14d6e99b2b3381fafcecf4813aa18abc6a31ea283924435ec4e4d48125cc3bdb999f4493f8f4702d12acbebf7da5fbe53941169681f986fcc59f7077d1c8613e86f282704807f2235901d879e012b1b97c2737d57a16605d65415df3bdf801bd7d8531e65b65ad0196032c56ee5413e7527f87735dd318072d20b6d9127cb0c3c0aafee5af35a943c592b76b00f27f0a2932c806fcdfd3d35537e738f5a6c1f4fcc796f28b8c53754400574f3c8a59ce3f0ad3df598a10e0b70bb22999c120a3d4ab743d6801290b403f46250b9ac749d406aceff0adecb1f1f0ee7ca0414ce5e54a5d5c8218313a2a110706c75e5fe523bbf3d882804351bb05a70e91cebf3dd64a57a0edda5596b073f657cb0d700c5602d28f3c543711c99b0e74144668aa4a628013e969cefc637c0d8282b01ec3009e8439ce6ea74b115ff5b88e51e7aab594f759f6f8082ef29362d020523fb081187a41903f0e52aac6"},"1594a89ae9c46de98303304d7d4a9674":{"iv":"4042424e7bed08ed3674d06a","ct":"e9c4b9c711d148d89507865ddf9e2afe2e678386178373436d34b79df2b40b6f85a4deba81c54148d0e202ea97c1407231fbcbc63650dd45a0c3c22e77ad4c39e530b7759aa772a130554ca8da73f7e679f6b6af03269609ac9e5fa9232514797d6b55dc26f534c0136b8f149843f92f1f7a3671b525f8040125369c9bb2d8518e421348988c1cf19e74cfbf56c93bbd58c6ba59b17c0c2bab1009c0533ae080ca3b44b5e0e36401fada47339db648da46950b9b9c3d771ae3149ec267876dafac84a6bf0128035bbdf96c20053de1a444996d690d7df3b69bbdd54f12d54ecf414fc46a9e829a2071de999c695ca548101d71f95d8773285e2ce58ef0e3cdfbbd37cd59f88f0faf3e13e19f42a8bfe1d16bdc284fcb1db438b44a2fb7f4199ded84e780cd2995ff0e543b5f4a59d6a72ce19d46e41f3b792acb2d943fc350ee8f4c8edc501e455a4a1ba8c0d92fcef159f1281fe6b606befd920c337fe31dff91f426158415178ae3ad46843b5621918377e11f8ad8d8dce5a7ed439dbe1139b45991f221567a309d4e3efbb010b45122e6fddbac2025e10b8fdfb8837104cf9312de6bfa97075167072a7818a94b825c6734e904b1e6470f8d527b88ab4bd7b4a9d52612bde5c3b60df760e1e6af6971743eb4abc975f0504161787469b622dca19a6b9e7db947100c4ac5967f1c486b3c9de4ee75fb22cfc29601f88f966803fa347e4b8d64f4b5de1e9d8b79e908eba64d791c085192f0542d5d99c12d4995ec5e8597a8106a24775b18908e66b6eb723842449bd9b5c1da423e248d4c10607c4643fd6f0bcd20b98a6a01cc30c43afda24769ab23db66b90706dc762228011e45178e8158a050023b85c99a5ef6ab730004a0586632dbc8185818a4e2dd7a44637543c2dc61fa06bc18841ff796ddd3ca6f66e507e16f11459cefa529d9e2248cc4df53867084d649e1736534f7ed"},"9955070d6a5b9449f2c63f192d7fe03f":{"iv":"5d38e4a6590daa39212c6396","ct":"d297c38342ab8c269bb5e2eaa57e6baa597f8c1f23d8ec2ade7efbd1459161a95f70e3375e1ed3d1cfbd6cae694f657683362569ac39ae7f8154247c570f79b9c740043ebeab4e68ae6f0aab6663289f75c8a46b6b594245afd91ca6eab06a427eff57e687d62e6d16cf8739a4eee7dff6311340842db96de5bee3f7566cdb910e5651d7cf9c07bd53b87534b2965944c479d3a68dd620b66ccd5221cf1dd73727c41c1c08c90822fd71d09e15526f78b055fc6f1c75712417a4e522d17f2d047eae03b4c3e25731db26685cebc04ae14244763db46932ea9d66b86be400d60c60ed05f85a807d8fbdf4117dda5f0fd549b793a62be77ec0cf3a2054a03c65211228034696c4ff64df35b23d3b80a366fd3133dfcaabe6b33af0a5d71f5c2461ccdd581384b72739106e494707cbb6e5d03c80d4e730b2f44d0dd145d4c355784176542ba36917bbdc4f26235f883701217a3d2e5e50636bd0eac38f99f4372c0e3cfd8f27730116b8ff9bcc46b0e83618f7d6c0f1f0dd608ea7884ae909c55649882dcd953d8e603a036ad47bd78f2ff050bc0a013403e1a84b7a95c4ee28a7e863f3208dfecbd43cec712b9aeac492bc33da678b94cdacc9469799ebe660bee34b0dc7e69683b6b43fad71d4a7aa7fa651f8059335a042702ca7348052df5ef085724cfd7be744e6c0790a0acfed7f85a4946d3bc9557b5fddcb03f1f6dedec7707cb4340551c7be8bd3b935d277341ec04717823debdb025b51b5cacf747515438458651aafa29531cf18966733598992d4f3111b24d66b5fb94add4f985b5309907ab301aee19f7e8cc82aee83c4e7709be782f618cb1c0edd5e2912018f1501069f50c36041c4c12c5e963c192c8ebdae7609751787295c627fef28d9f1371e3749ba609753257cd7c0fd16d6dd619c1506a909d4464ee2a8866a5feccf56cb9402d35c1d197ac0473cf716822d5edd"},"3b08a972d55ec79368550472d186f6b0":{"iv":"80318145d944d67cccfa254f","ct":"2a7e0a56ff1eb4816116910d00ec0d9b7c647bbc0ec8dfd2eb7926c4e2537b4b7d6d09ceaf7bfed02741dd7acabd94b50d023bf94fb1eb5086699d698e27818d276e5140665024bac1c9cc3baab68fbeace945cc012962e673b0196ad6af10c1538db515e1d58ecad018e5c6f21c712c0dd13243b9aebc3d9b09e1e9d0d297313b03809fa749bd091a86b7d1fa789870aba90c7e33b3e4e45aa55c53d7939fc28d34ea8131153d0e863dc11fe5989c20b8b418194711a783abfae22b9cccdfe204abcb83f6c25f2ba89d175731c8fcbc81791fb464100ab2374f8afdd755728d01edded6236fd75523e42bccca5e18592459522d98f87745457c44cee1d514dfdaad4cfb00663c66aba5b2f8ae161acdc8d620d825125cea456ebaa6755127d67f668053fd6416667c531c132b2bb358b8d57f793a3b4c106d5d7d26c4eebc456b373df7f85ed049aa2f1178c1dbf164bd6f6a41ff05345fe8ebf8f619597acc1eb94a857e73df6db8702ce1b7b892e644ddb0cc407c3b23ee96ee60dcaba84370e5d70ef0885771dea259a20ca4df8dda8fc799741b4269f3f5675403eb6c0c675632674c0b0d9c0c6cf4f1c95ec6d982cbd60f83c75ac16d53b71cf856473efba2786e977342734431d9d9410d749c34ca59a6565420b4ddeb1069a2d144b9b623870cbc1cf1cb2614f0e251fadc7c9cbe3094d37398e2b104269a5c8811142d2f2929c07e56be2ed73c0819e57e3f142b2c1fc1b80ec778c96ad9c5ba58a39362729098c756683cf36ba834036c559ec567c55a8ff7f1c4ea4fc2f4b0717340b8555215b4de7c34b33878f38ce6f9d3ed99dc1df35513a6bbec7d1c021ba20c895bb72c2bb1914de084df1af13bb6d83919065d899acf7ea98366d5873111933cdb813860a2b8c6a0b898b822dec6d428d6d727199f89b51596e823744449b8ea640d96e939134ab662d4dd39f81d3361"},"1a233d9ab3b76c748498a74c65c9fb82":{"iv":"62ff1bd00383202c82c9ce61","ct":"961e67e197074f19e3266e5f1babb8f93a29962479a40057632e55d839653838e230ce0352250f9c3bb23d775bfda197375bdf3bfe112af1efe0fdfd5dc1808fc12607f198111a12f70ba117be775be050973fc12343e5970675f7e4ac4bcc6d76b30b4b34f6bf9f194cab56416e5e5255b48430c9955b76f7854459dac885192ff62e7f6aeb845cde5d397273c8210d5318af01193d767e01568dc91561755672ff92e5c9f98010470d1a50eca9140f67eade894af5ed254ebb9f6566d68a9bbacca52c15ddd121eb8e48f4797bb5795516892f1fe4602802ac4740cfe2bf13672f4edddc27b600e749d9329e59f81d651c8f84eac694c63fe444cde6030c5fb38d4668599411efdc26d93cb686e1b4b4ed39575bd15a4de81d14fcafa405789b8abe00dbfedc283b8e742bc4a96190cb1bdd5d911bbb31d704122ce3b3bb9d5116b089025c4f05705754a8e632079a45f59353dd7bbad0eec0193e63c7670b7aa848601b31da1009ce8798c80bf04c119f17a085ee58f3d1514facedc29e3270beaa58d6efd78760412bef2d3b92b5a42c6965b6dc38b08844f0adec89a93d385af9eae1d51859b74b9fa265f967ba06c33e990d5ee9e641a247a205e99f92ff9bd7f8fa2cb61e3a8ed26e795d83aba9d9bcac34304952ded5059617d03b61fdf3eaa876a4dbaddb776ab480e5331bd68eeb2efd26e73d85af3d97d65d0d9c5e212e69c5c4298fbe5bb3255884a7fd73e8c6d8d360040da085e478c83ea47219368b975a8f044a3627336435a4ca9d3d8cb95f6214c59a0b794a9729a4354f57ff0ade89d5fdb9ae479c05e3611be1ed1e031e6af80b3848fba20f5ce200173ca21e3c095215238d7b02c995814b4cb297d401acfcb212de2e03d1e0e1377aca4a3b4038c601a1ca9904442f0336ad0720febd0d3dce0d11e70d44e4f83670ac5b8d0fc5f634d5ff6e4e4b0f92b66d750a"},"a4fddf68d6a902bf8330f2c6a438ba72":{"iv":"b7dc786c289abe287d5bab8a","ct":"c86dadccf4645e2930f62aee70d01f37002ac0d4e43d43e500f7b8d2e679cd9a19a27370ccf19f73b55de0cf01b8c2154bc2a44d50071fb16e1ad79063a2fb9f38299fd760b4186b8b984556cafaa48b6642a847d1bd86d0fc9ea41e196edab297d3b40e3fe11d8591fd100881e6e44320f83b26be3db4ad046225a2908b8f6f5e38db1647dceeea067842075d1a699c8c02905e1886175815296eb60eb867351580d9352eddaaafb1a0ecf24332fac2536c503278a0a6f6bd4b8e2b856812b3122f45d290e5aff4a78b12a2814aed13944bc046ed76dcaf620d631308ee5dfa9bd3a3112483c021b9619b8bc1365732248586d07cf67672ca20ee05d68f65fc8c1c0188e95f3a0266ce85015581a2484ad8b755a59c4976987883481cf430c2586e24892e9e6d7a2417c3a55d1e03914e06a3ed50b2a0bba94c08c1a38b6b783117cc60faee0422837b9d0c57117ba53d216c03277f30dd25df8ae5ba1199a45c5b5a331a653ec77a3344246ebb510d7343d84915b5819f283f07b42e5adb7faa872a75183d7e01d60fd5a5453feaba960fa2e520df4c30b5d0f7000fa89157730a9019c655a7062c9a749477362bc3ed595f533562f668ef31d7918797cbb5268f7b96595db64a7c575a8e088646d5a149ef29d07d1df3495265ab357eab85911b9314827f787d38d1651104acbe16a36c74db512069026ff926577f4d665f6bc2c3919de8acb92308f382c32792615c55145e3f3ce4cb0e59c7d623533194c2c582e8d9e5459424c295f0591e073efe0531fa31c8822ce967e1810399843fe78b8fc59d549fe85159653166dfa487d939a9e2d891f70f07b9776300e2f5de943492c41a9d4806df4c0d2a4274211474d2bb5f0599d994bd222b4459342827637d0aed9134a9b9b124c79b7aedb1df36d39043676669c7ccfe8c15aa9b6fc600a7417b17a719dfcda388b7d6d6a09697"},"05a83d9d6eafdad418af5ebda21c00f8":{"iv":"3b3a5d66dd3c4d65463d1461","ct":"864812a5a7f82c2fc1cd92090d81b1123e87a44d6794bf36501fc4088252fe88b736200bbc77cb0cb9b66235723191642705cb752021708f7354b61240e762b67c0cb93e5cd4216d7c559f71aae598e1dd09fc1c59c5cca270ca4d4656e1edecb3e013a3312debfaabbf724a9d845db3be4cc0a6b51fc397119e42e4c3ae986c6c764d151ab207590090ba825cc9f414ed92b1b5e4baa3a3187da771b0cf2a42a1c26c3304a8e1749e87b018425d92c503ea1f8ca961cdf79ac3cc017fe5da3289af85bb938c2c1c9a33b01d71e4c0fc03036d4a2bb6fefe4b0fc577480d7c5f135b0b1d27e8de96bed1153b044931b377c9fe0626a7bd87767a3fcdf3864dd82d4410f24e7f566307cff1c92da5dfc316d6309dd996b072f85bf7ebc2a0975d6c934d0b6e8574c5422e9912e0724928649e0f0fa04c40f8c2fc832175ee8e0800086e121968605f7905f1aa118b8bb1b426c6f14b54172873c3bb98e9de35fb5b766871456af11603195620b89368771c839efc7eb040fa5026b4cc2d8e3afda4213ac9b324148b8ce20f9fc46c788bdae392c39b7f63231c926bc349fd0b44e6504af581e78b6268e82f01026a50022b4047ace2bac3961bf713acc28a74477e9ed2bb7d10652fb19f34d414768314ba7b36d5c171caee6eb8184c16edf2ebdb0691d2fed57d6b8b51024a755a5aa569625894f49f15713ff3df5b5419eb7c29f58545f5104484c36f7fc72b06cb47cc1351c4145d673e369102d8ae2b1e2c11d39f262129096d5fead7bd1abb3d960c1335d73cdf8127e3f3489ec8f9c85a1db199886d499451c00ab122eb39e3aa5ba0df03f01bffc83526ca4ddfbf0fbde2086d9e136d9a413028d9efdf3f202b1674da7603cfbdacf4cc816ee86dc0e84f4b7d7562fd63d65470a5ba88d774d90782d3b7fd23d3c5691c43c3ade28f29d469525a48cf12bf0f0f1cccf965a9d1e2"},"ef569114f17b344e82790c854e4cef9f":{"iv":"2c1eed9bbea1be53062db583","ct":"610404db0aaff86d65b4fe2374cb4a066e307755c379cbef0749e79199ed4965eb683f08704f7781f69688b6981ea6a2250f02018aade955ecf455434a1513bff0976618c652d7a682b0f39a786fbdc76711ba42e997b00e69867d846dd78f30b7d4d9f047a8704bda5b549d49ef036dec05a7cb29c66c22902599b091831f38ba9e7190b51e76574ea7de58529f06b11deae1410df56ae842cf5b1c800dc8cd133d5f22eb2ff2f115e9728dfd1f3a9d97a097648aa5a4a7010670a3270fb9d3a5e04a9697ac0a35dea1eeee941206aa4806475091fc4a0a2ef6bc2de32f0c01140e6b412404701fbd4ae2dba23f9c8b61541ad4d2cac1b8dd953f2dfd805d5798bf613e828a07b821f2d60c543dcff990499583280cc72b00a2a40a249ae5700c5e4d427a343b020fc9f4627aaa5848d37480b1b6927c7a9ba06bbe857f98848c20bc77af73c75871c7b7866e26c36f4359b044576e9c39e27df0cf3204c7e65ea25ec607e9164318f40ce52e744937923f56200c2edeb996d68a69c09dcbb489e656b770b606675d49512db4419a690f0a176f6edd5577829b80c07fe02e54f108391bffd9a2c4478775fce32f708ffba3157bebd62af1c0531ac1cc4e8f1f82ca5aee2c74feb9f8b234d2b2aef5bd9ad34547d61800fbd6bbb71c55298c5aae2675fc1eae862c53cafe0afad313752dd22f3a38a1762d1442d5a106930d7f71e18c0ec6184e141fb7f50f1fbc359072a39c71365f7f3bfc2b805e4fecc70809af80a36b139bce5989490d7e52dd14bceaedf43ab3125e286721eae8ee04d4b70aeb9e2be625aec95c18ac5c67b7c9e000605cb8180caa1799c7e87d0d650dd2ee1d93d7379eb1077da2c85dd3fffa8bbdaed3658bb20b1bfd4cfb78bc99c255b715506aa19c767ebe041c396f4092131c60669197f46bd5a27db0b88711bb74b2baed76911ffe1e6c60fc7dee4130"},"698848db15e205cccd36c466bcc3624d":{"iv":"44847abf05cc41ac008fda9f","ct":"afdb0eae3d4041e1f44c804bfbb37d34bb144c689be929f164ecbbfc691206c329c21df8ad65268ed56302b0bda94d45e12072eb6ed0f3b79f98b11f042362182274ed03c72bdf0e8510c6aea1a9960db421d441f37af8d54b25213e44e8d2c9add460b012486b19ccf86f727b80efc28bb8fe22984b951489ca639b90a029eda580c9ef41def6a5b4c270e1cfcd83397894f2f7f47f0e2c4fee48986718f3bf907f9a8e4878c7bafb106920c712cf18e2152e5ea81a914cbc7eb5f762017e845e2dbf39368781275255bafd0f10aa3f185ca2de1b4105a36131035c23951f746f95335510adbe7e87e7813349f90032fe24a5c53b2958bd8fabc7cc73e1a986ee2fbb179bf41355e4d7f67ba690b36be90fa0108eb55ff69a573ef3959f74f6d01f3dfe2073c2ec9e867fb64730aeada07b6f1ba07f269f708d1484a6b0fac5621ea78fc9770f7471966c6dea575062c385f578ecb785c9c9b803bc651dda77d82ab17eafb7ba0614a43606d0c301d6087501794b40b6546ff0ae3afcfdd0fc285af7f70588ded9b745b905fad763587fda3590824797dcbcada2bb717b711421e0a219440109cdaa12cd5936eb917c2fa832fb4308f16fc7f48c26ed400bdba7753d0fd577a7fad948ebe5cf7ec7984876afa7f562faa59cbe16fd609f9f1df7203d5dfeb7e35d05c95d61e57018bd16d1c134b994a4e20f03eb3f376067ba28a215dc94186fb59c5d6be5dc4a4cd0022c4bd5401811335fd2a8c908cded9bedcce20fd9b434f69207f81bdc8438e646b70a17d979dc63bdf7ad08225d52253c813bce4eb6d0d236fa5b0b067b99a0a6df30dec72bde9c568ed001714941ff74da68f326c1bba3f13b4cfd2132b3d7715c2c64ca793929ad48dbe14d543c9541cf698562d8c4b3b9249382d1a62bbec2ab348e58308fde3defca6b9e67075e9a4059236a5a0fe8a09cb561f1266dac"},"eefd8c69937140216a11b7f8bd776a2b":{"iv":"b137b97ee657c8e03bc26021","ct":"9316378edbf93f7311704d5b53ee96ce5a77ac37857ed428c9fa30be69e5fe74de80dd54c929d90f51c2203be03105b1f4e0ca2128a5936b7125addf7482f25dd7feb91b0c73eac9169a5c2c29907371e11c36d1c29778ed49841dbf671417ce4b592206e4f36485bee65f2cf79a723a9ae6bd2e5e7f08ff44fa603fc801f694ce30eb006262ee632be4fab2ee512fbdc95e549b1a7fa121c2cf255173034d00d494680d2c08fecc8648e49dbc8f002607977b91a60d69e60247e8803c50659dceed225e4549de8b9f2478ee040aab38e0fc39227cb19693b075a9aa67f02498baf2c0bc9838fac00a6bf3491db786972a3b06b1ab80a9b457ba89b3a00a3cdadfd29470c664039243d531f7066832f65c01d7807b1c539aab5151ffd2c0ffcb9e5a7f29ae2a86c2c04630e2f409a27f75e7d3b271172a160d82cfb18182dfec97b59d625a975fe084f22c2b273e9028c780b88421e999a0a8c385ae10cd54555e44c935b80384671048f782d73cced9afaa7f757aa0b380b56d7a4a4e68df9f1443a89126f83c56d2b60d008192b54a2ae1ca0434c147ec2d1ea0a0998cf3c617fd88f7c305c1775e4b3cea129804775438d94a8d3a40604f842dc7f30cc811d9bb2a1b455a278ab65aad7f48ed4b22e6ecc9a7d3e02cac5f3937dab4d0148b17f5a4a96f6029c92aeb6e0c6e574be0d39384ffa2447f0517f25ead1edf499e4bf1d123ddcf377df73920e1ab5e79eddc49b1f155b932b790a5f8c22f5f825e56590b6180fcb16f40c1f97b0cc6ee7ed286d133cc061300574bcefd54f0f17470f50830b70220aa2cae7eb6c1c24413b5419d5bab886de92642622170114fb804df63930e0c9bb74311bd5e8f1ff2c3a0fd89209ab6d6804b70b0a5eb0761cc73250e531b510b4ee458c09c50c2ced933fb52f47c722bf40e5f163ad5db7658e66c2ed143c8ebba02cd5bce40159f08a7"},"ed6a890837a72dc099e2ea2445efd34d":{"iv":"68371400b28f1a7dca617b3a","ct":"a0924235c38bfef38e83b30cf7e7c41827b35370d195c9335a69384dd201429951294fc99cba8281c24cb0232d2e9825dab4a89d9b37ba9d520f46a4727bb693450fea80176e6e9fc47b89ed9193b8e6fa7914a10627b6b685124df8ef6848a4778f9b1ff42873b102d045ab50065ccaee023525e66e5bfc8d03e40195d7dab5aaefa56a92d01a648aa3a5909792936ab50702f3282a65752f8329f758c145e3935f023bb4f1e9bb81c65bde648677ea5de2aef27e7dc3e7eabdd4f415de3fc97562cadda7fb83ee5b4779b4615bf0b9121423a32a2e8e4327951e4c334e061ab561c881f88346492e2383f2ccea761dd931417679e6ece3cadc11852c2174bb48517ba0521e860e380da26764d20103ab8bfb9544aa9c00dc1eea6ab6d09dc4819fb338174bd9d09aada46b6c333dae3b96cc8632a408c19b96d1d8aef2cf4e41ac946110c58ad35ecc352c35361f670b520fdd397fc972262d9a49a9d5b7fdb141b086dd3d100d7add08cd6105542430e3087719bf7be7c1fd5b748beeec767d456e31c4aac87e79f41a456b08b6e3398e9ec25da27daa12980c2e394b2cf2cc8c33183d8252be15f4d0d3c876791b95424dca4135dde9a00ddb156982b0a20d7e64ba2e2d2133a57a1a52177bb8a63fb8bb6f73f0338dd8a3a0e3f46a8ceab4897907da7edac855116f02b43808e7e843e96fda6eed8b92d357fdc31f917382b94c44fd339c9a38369f269ac487e695e88e98d959d86af2243b332722e05b169cb6b35e75200183fb675d5a8242a1724ea790bb5f9dd69c7324e403a01f8def1c055f17d939413c06e7c68a6b817728d9582d1f4a3e181ad806c34b64e4c13734d108a06c9b89ba931da4dd6e55cc4f8242caffcdb390f44069eb51237fa546a9ea887a0c5ff118d912db8ca3e3f192b876c42b85e4593dba60fb96ff38a8574f6d88ea4b898322d2aa99630dcba14ca2"},"dc975f146c5e48d423278f5b054da6cb":{"iv":"736553edfac93e68372911ac","ct":"fe0f58181d3bf4ebfdc7ae7aba2534a5a09b40bebfb212e206b8e50d39dc02729933de6b36cfb3405fd2a233858158e0c5f4078ff355674d9b90edb2b75f371edc6adccef3e67b900377dc21747b50709cf844c89093ac909b2793f6a498d4ad7807bce63a3f4eb1bc5dd9eafe18db0e6a603d27c62092e314d6cab7397784ed6df30b06a22f48eee0dfc21772a5511e9383afaabcd2a500eb1e4c2b81bf57d2322ce05e445efe49f3c7ce6abb9787d1529d5b5ebdd479dc926063a5b2f48fd693b53bb2c539e8dda2ee7e1f61ef83afbb271070ae9f141d2ac3f3d8a5ae6c6ead11ca6eeddf15ee43a943cf695580eae9661944fb6c671ab50fda5de5cc6cb57f716aa201d01aed04be65cf98d7a2be887ded96584639ee7882d0e88c740f95124bfb2ec6c8a7ec9abf1f4a003c815e090d8ab1f77b376887019c0dd011238b1cd48be1b23ea8c0184a5fd703baa68fa5fb4e59e8aff72e1471280fc210964a8c9dc8d2244f9eecd8dade42bb86dfc3ff15ed1a22cb3357a5db3cb4bb877c01a92dcb88aac4ced7ac8e9a95e6ac4b7d0aa7bc97139428f38176aa1020204435ca82a84cfb032c2bb4af29c60c569e44ec5097cc7d2d7aa64bd2e32fb39421d8c57197eec24a8753608e1fd3b4e22e568898a5b68ee66d4abda9a07fbca7b10691ef63f3d012a7e2be16118f6508e3ba9156606ea5c615080cb4ea990baec1260bccbfebd30386fff0cba18daae6c0a40970dd3bb731d431c4ee73e30e10dd0d86502286fbe2a3b2b67d57400a82811d8fd459f1ce7097cb29d0fec930e8722814929f5edfa5a80b320705ff83492b343cb1b9e8ea7b073d20ac2a9e20bae8512f1b346d71b26f015ccc0e12bdb9abe5ac0349f992a0e9274d354b33511d3b483756c9cfd6971b97a46744f6a35f112723eb9a09593c609393640c71b0e113cd11d8d9a624cff9140c83a49a4dae4738"},"638f41d88b47ef0f327b1c6d84301455":{"iv":"1da7c4429ea8ba8f16089788","ct":"aea2adb46477378c6033df9f27bee06d79596cbfa09346e5662e5c6332867ec6958434ba1c7682a316bfc8869dddeaf186f828224c85402a64cab24cfec7032ce3cf0035bc16b398609ed451060fc8029e5e561a3209d8b6d700b59a21f60c7ffb0cecc039b7cb08de469253241468f8a233e9eeefa79814ef81785e9078de23def72be03169889d50c2e2b6e3cdd3a6ffb3120647bf9da7af9e7619f4a497e5359524db2a64c7501a2ff0aadda2374d50049cb2006bda7ff77d3ade6fa218d9f6c4616e9b3111be52290ebc334c0b6f6e2507d61eca1d6c76464665645e8edaa5deea2ab907fda5cf9127117a517a0fcd6006cd4f129babbcdc094b98b63027d3424dece3214506cf6900ab5dffcdce90aacdf0c9ba85b4b813bb22d7c174950de66451acaa1f9cba63d7aa971568d99c75aac7490b62695b8463607eaffacd56fdbc37e179e2875dc7999dfa7696f0036aacd3721db0135f643a7e8f701a61e7dffd4e272b0dc85ac807b452dcf5670a9e81069727e2456c0271fc67a1618b2b20ce381fca4a5f98157700b3c361fc02326838f382e78ecd3a2e254cade5a4b085585df9acea63be11328e0ae1e5125019bf352ca8ea14d3f65360354e184181c4d432de5a628908b946485c72a73584b16f690a27f0ce447f6afc793edb5ca8fef065b648bd361a992e46b03794d6b574bd0ca79ffd8fa7fb475383a606f5a53800b14d3d5bb7df8de151dc93e49729ed1f07bcec3462879f2776053a392a54c0984f4cbf19173b42850fd6b7745f073f346acd4c32dd520deec960a41df2c213e9703a1f0c33e702a8baab5b438434a699a02e7b25f2532e78a27bb8401e7ff98c831e0c878d13536352a26e79478ab71f7a4edd1b29209899c827c5bca82d38411be61318ce786183ac69404be4a7e761dde83eba1dae4b0b2e064d45bb8bc9aeb4f327f3fd901d42e18ada578934921426"},"6d38010f390dd9c205a9b874bc82982c":{"iv":"cecead0326dd0ca8312ca6d0","ct":"68c6580fb1bf2cced8c5f4c5985c5636ef67b14883eaaa259002124f79a1dd77b916bf91940e5870aa7ad9098ce1a5a102cbd6f1e30ec38a7a7f2f999542d421d5fedb091d6b6c72075447889d1f59b71dd26d22b50bf58a2695f633a341ea77811d2580eea37b9febd6a022fbd7f959d5531d763ac32813c1deb8fb631956259102049dd87f6b70740cc27e2ab20d4648b1a46fc038445c3bf645df8e407a6dce0dbd5b84f3661ab12763c3cd3f3a1733c9dc02c5d9396ea655869e05886d97316fa6e591f416d2fb2c5affc4af0915968eaaa933e2d4e1f6c457a27c053bfe71652ca7c9041ad6d81342fef029d8b5e60a67e96f1472b17a8898364a300aa1dbd901ca9d9e92b340b177c5b3e7c22817218a575bbad3113ab9aeeb0d34966f93f2780b7cd2ef856cb6f9d66e3701c5c74bc5f7bdb289b1f1aece07ac83a5f1e0d27e07d3babf5b5683e1fe2af8a901f445b07a3fdeb386843b6bec7d2a1ee042c219737145bab3fd08866f3cd3e3d1b2cd3843fff8be7e6a9fd92ed6c6bfe6b51816a35c2940bfdd22dcba0aa6b7c49c2dff945873cf0fee85a636fcea6703a3e4d93c10aa36cc9ac641f23e384fe888ad197186b0bb6f6b9c6f9622b6576cfa7881bf247e4102d207d9f5de00b27eb056897079e4e17a4e4fbb6fac60e4e45e747fa81decc2c9573b1029db440fe515b5e9ab5a2f85cd2922a66cdda586a95e81f859f4ade10c742a0f0ed4453082dc083a6a63d4a0164b0be2e9512d4788d2415de6010f1573c78ab6a25eee8e6d3ba05b7a1259026534fe763105e16ba1e4932e173030dac7b49b4c4d2b635f98c6c00b513e389b52e3efb2a87782b693008272dac4adc35af1f1ad8403a4fb85daa393c58c72e5712f5555116a338cafc4a725285cd5a71109cc8d488d986098650073ad585e46e4a16276e0eb56ec13468a289e40ac0948b30654b8cef7cdd490f62332"}}};
+
+const $ = id => document.getElementById(id);
+const codeEl = $('code'), goEl = $('go'), msgEl = $('msg');
+
+codeEl.addEventListener('input', () => {
+  codeEl.value = codeEl.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  codeEl.classList.remove('err');
+  msgEl.textContent = '';
+});
+codeEl.addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+goEl.addEventListener('click', unlock);
+$('out').addEventListener('click', () => {
+  $('sheet').classList.add('hidden');
+  $('gate').classList.remove('hidden');
+  codeEl.value = ''; msgEl.textContent = ''; codeEl.focus();
+});
+
+const hex = buf => [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+const unhex = h => new Uint8Array(h.match(/../g).map(b => parseInt(b, 16)));
+
+async function unlock() {
+  const code = codeEl.value.trim().toUpperCase();
+  if (code.length !== 8) {
+    codeEl.classList.add('err');
+    msgEl.textContent = '코드는 8자리입니다. ' + code.length + '자리가 입력됐습니다.';
+    return;
+  }
+  goEl.disabled = true; goEl.textContent = '확인 중…'; msgEl.textContent = '';
+
+  try {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(code), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', salt: unhex(DATA.salt), iterations: DATA.iter, hash: 'SHA-256' }, base, 384);
+    const raw = new Uint8Array(bits);
+    const id = hex(raw.slice(0, 16));
+    const rec = DATA.recs[id];
+    if (!rec) throw new Error('no-match');
+
+    const key = await crypto.subtle.importKey('raw', raw.slice(16), 'AES-GCM', false, ['decrypt']);
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unhex(rec.iv) }, key, unhex(rec.ct));
+    render(JSON.parse(new TextDecoder().decode(plain)));
+  } catch (e) {
+    codeEl.classList.add('err');
+    msgEl.textContent = '일치하는 코드가 없습니다. 8자리를 다시 확인하세요.';
+  } finally {
+    goEl.disabled = false; goEl.textContent = '성적 확인';
+  }
+}
+
+function render(d) {
+  $('gate').classList.add('hidden');
+  const sheet = $('sheet');
+  sheet.classList.remove('hidden');
+  sheet.classList.remove('reveal'); void sheet.offsetWidth; sheet.classList.add('reveal');
+
+  $('cls').textContent = d.cls + '반 ' + String(d.no).padStart(2, '0') + '번';
+  $('nm').textContent = d.name;
+
+  $('wavg').innerHTML = d.wavg.toFixed(2) + '<small>점</small>';
+  $('avg').innerHTML = d.avg.toFixed(1) + '<small>점</small>';
+  $('total').innerHTML = d.total.toFixed(1) + '<small>점</small>';
+
+  setRank('r1', d.rank, d.rankN);
+  setRank('r2', d.crank, d.crankN);
+
+  const rows = $('rows');
+  rows.innerHTML = '';
+  d.subs.forEach((s, i) => {
+    const dv = s.s - s.a;
+    const cl = Math.abs(dv) < 0.05 ? 'eq' : (dv > 0 ? 'up' : 'dn');
+    const sign = dv > 0 ? '▲ +' : (dv < 0 ? '▼ ' : '± ');
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML =
+      '<div class="top">' +
+        '<span class="sub"></span>' +
+        '<span class="cr"></span>' +
+        '<span class="sc"></span>' +
+        '<span class="dv ' + cl + '"></span>' +
+      '</div>' +
+      '<div class="gauge">' +
+        '<div class="track"></div>' +
+        '<div class="bar"></div>' +
+        '<div class="grid">' + '<i></i>'.repeat(11) + '</div>' +
+        '<div class="avg" title="우리 반 평균"></div>' +
+      '</div>';
+    row.querySelector('.sub').textContent = s.n;
+    row.querySelector('.cr').textContent = s.c + '학점';
+    row.querySelector('.sc').textContent = s.s.toFixed(2);
+    row.querySelector('.dv').textContent = sign + Math.abs(dv).toFixed(1);
+    row.querySelector('.avg').style.left = clamp(s.a) + '%';
+    rows.appendChild(row);
+    const bar = row.querySelector('.bar');
+    setTimeout(() => { bar.style.width = clamp(s.s) + '%'; }, 90 + i * 55);
+  });
+
+  const cr = d.subs.reduce((a, s) => a + s.c, 0);
+  $('foot').innerHTML =
+    '가중평균은 과목 학점(총 ' + cr + '학점)을 반영해 계산한 점수이고, 순위는 이 가중평균 기준입니다. ' +
+    '<code>▲/▼</code>는 우리 반 평균과의 차이입니다. 점수에 이의가 있으면 해당 과목 선생님께 문의하세요.';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setRank(k, r, n) {
+  if (r == null) { $(k).textContent = '–'; return; }
+  $(k).textContent = r;
+  $(k + 'n').textContent = ' / ' + n + '위';
+  $(k + 'e').textContent = n + '위';
+  const pct = n > 1 ? (1 - (r - 1) / (n - 1)) * 100 : 100;
+  const pin = $(k + 'p'), fill = $(k + 'f');
+  fill.style.width = '0%'; pin.style.left = '0%';
+  setTimeout(() => { fill.style.width = pct + '%'; pin.style.left = pct + '%'; }, 120);
+}
+
+const clamp = v => Math.max(0, Math.min(100, v));
+codeEl.focus();
+</script>
+</body>
+</html>
